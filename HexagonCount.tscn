@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://air.png" type="Texture" id=1]
+
+[node name="HexagonCount" type="Node2D"]
+
+[node name="HexagonCount" type="Polygon2D" parent="."]
+color = Color( 0.686275, 0.054902, 0.054902, 1 )
+polygon = PoolVector2Array( 18, 0, 9, 15.5885, -9, 15.5885, -18, -1.57361e-06, -9, -15.5885, 9, -15.5885 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -1 )
