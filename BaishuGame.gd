@@ -55,11 +55,21 @@ remote var this_side := false
 
 var first_turn := true
 
+var poll_timer = Timer.new()
+const POLL_TIME = 0.5
+
+export var server_url = "ws://127.0.0.1:6969"
 
 func _ready() -> void:
-	var peer := NetworkedMultiplayerENet.new()
-	peer.create_client("server_ip_here_i_guess", 6969)
+	var peer := WebSocketClient.new()
+	peer.connect_to_url(server_url,[],true)
 	get_tree().network_peer = peer
+	
+	poll_timer.wait_time = POLL_TIME
+	poll_timer.connect("timeout", self, "_poll")
+	add_child(poll_timer)
+	poll_timer.start()
+	
 	$Board.position = get_viewport_rect().size / 2.0 * Vector2(0.5,1.0)
 	
 	for q in range(-Consts.board_size, Consts.board_size + 1):
@@ -73,6 +83,8 @@ func _ready() -> void:
 				$Board.add_child(n_hex)
 	update()
 
+func _poll():
+	get_tree().network_peer.poll()
 
 func _process(delta: float) -> void:
 	update()
